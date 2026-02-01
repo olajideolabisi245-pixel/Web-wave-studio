@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbix - Freelance Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* --- Global Styles --- */
+  * { box-sizing: border-box; margin:0; padding:0; font-family:'Poppins', sans-serif; scroll-behavior: smooth; }
+  body { background-color: #f5f5f5; color:#0D3B66; transition: background 0.3s, color 0.3s; }
+
+  a { text-decoration:none; color:inherit; }
+  
+  .btn { padding:14px 30px; border-radius:50px; border:2px solid #00ffff; color:#00ffff; text-decoration:none; transition:0.3s; }
+.btn:hover { background:#00ffff; color:#000; }
+
+  /* --- Header --- */
+  header {
+    width:100%; position:sticky; top:0; background:#fff;
+    box-shadow:0 3px 6px rgba(0,0,0,0.1); z-index:1000;
+  }
+
+  .header-container {
+    max-width:1200px; margin:auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:70px;
+  }
+
+  .logo-container { display:flex; align-items:center; gap:12px; }
+  .logo-img { height:50px; width:50px; border-radius:50%; object-fit:cover; }
+  .logo-text { font-size:1.8rem; font-weight:700; color:#0D3B66; }
+
+  .nav-links { display:flex; gap:30px; }
+  .nav-links a { font-weight:600; color:#0D3B66; transition:0.3s; }
+  .nav-links a:hover { color:#00B4D8; }
+
+  /* Hamburger */
+  .hamburger {
+    display:none; flex-direction:column; gap:5px; cursor:pointer;
+  }
+  .hamburger div {
+    width:25px; height:3px; background:#0D3B66; transition:0.3s;
+  }
+  .hamburger.active div:nth-child(1) { transform: rotate(45deg) translate(5px,5px);}
+  .hamburger.active div:nth-child(2) { opacity:0; }
+  .hamburger.active div:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+  @media(max-width:768px){
+    .nav-links { display:none; flex-direction:column; gap:15px; position:absolute; top:70px; left:0; width:100%; background:#fff; padding:20px 0; box-shadow:0 5px 10px rgba(0,0,0,0.1); }
+    .nav-links.show { display:flex; }
+    .hamburger { display:flex; }
+  }
+
+  /* --- Dark Mode Toggle --- */
+  .toggle-btn {
+    cursor:pointer; background:#00B4D8; border:none; color:#fff;
+    padding:8px 12px; border-radius:20px; font-weight:600;
+    transition:0.3s;
+  }
+  .toggle-btn:hover { background:#0D3B66; }
+
+  /* --- Hero Section --- */
+  .hero {
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding:120px 20px 80px 20px;
+    background: linear-gradient(135deg, #0D3B66, #00B4D8);
+    color:white; position:relative; overflow:hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .hero h1 { font-size:3rem; margin-bottom:20px; animation: fadeUp 1s ease forwards; }
+  .hero p { font-size:1.2rem; max-width:600px; margin-bottom:40px; animation: fadeUp 1s ease 0.3s forwards; opacity:0; }
+  .hero button { background:linear-gradient(135deg,#fff,#00B4D8); color:#0D3B66; font-weight:600; padding:12px 30px; border:none; border-radius:30px; cursor:pointer; transition:0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.2); animation: fadeUp 1s ease 0.6s forwards; opacity:0; }
+  .hero button:hover { background:linear-gradient(135deg,#00B4D8,#fff); color:#0D3B66; }
+
+  /* Orb Animation */
+  .orb {
+    width:100px; height:100px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #00B4D8, #0D3B66);
+    position:absolute; top:20%; left:50%; transform:translateX(-50%);
+    animation: rotateOrb 20s linear infinite, floatOrb 4s ease-in-out infinite;
+    box-shadow:0 0 50px rgba(0,180,216,0.4);
+  }
+
+  @keyframes rotateOrb {0%{transform:translateX(-50%) rotate(0deg);}100%{transform:translateX(-50%) rotate(360deg);}}
+  @keyframes floatOrb {0%,100%{transform:translateY(0) translateX(-50%);}50%{transform:translateY(-8px) translateX(-50%);}}
+  @keyframes fadeUp {0%{opacity:0; transform:translateY(20px);}100%{opacity:1; transform:translateY(0);}}
+
+  /* --- Sections --- */
+  section { padding:80px 5px; max-width:1200px; margin:auto; opacity:0; transform:translateY(20px); transition:1s ease; }
+  section.visible { opacity:1; transform:translateY(0); }
+  section h2 { font-size:2.5rem; text-align:center; margin-bottom:50px; color:#0D3B66; }
+  .services, .about { display:grid; grid-template-columns:repeat(auto-fit,minmax(350px,1fr)); gap:10px; }
+  .card { background:#fff; padding:20px; border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.1); text-align:center; transition:0.3s; }
+  .card:hover { transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+  .card h3 { margin-bottom:15px; color:#0D3B66; }
+  .card p { color:#333; font-size:0.95rem; }
+
+  /* --- Contact Form --- */
+  .contact form { display:grid; gap:20px; max-width:600px; margin:auto; }
+  .contact input, .contact textarea { padding:12px 15px; border:2px solid #ddd; border-radius:8px; font-size:1rem; resize:none; transition:0.3s; }
+  .contact input:focus, .contact textarea:focus { border-color:#00B4D8; outline:none; }
+  .contact button { background-color:#0D3B66; color:white; padding:15px; border:none; border-radius:30px; cursor:pointer; font-weight:600; transition:0.3s; }
+  .contact button:hover { background-color:#00B4D8; }
+
+  /* --- Footer --- */
+  footer { text-align:center; padding:30px 50px; background-color:#0D3B66; color:white; }
+
+  /* --- WhatsApp Button --- */
+  .whatsapp-btn {
+    position:fixed; bottom:20px; right:20px; background:#25D366; color:#fff; border:none;
+    padding:15px; border-radius:50%; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:0.3s; z-index:10000;
+  }
+  .whatsapp-btn:hover { transform:scale(1.1); }
+
+  /* --- Dark Mode --- */
+  body.dark { background:#111; color:#f5f5f5; }
+  body.dark .hero { background:linear-gradient(135deg,#000428,#004E92); color:white; }
+  body.dark .card { background:#1c1c1c; color:#f5f5f5; }
+  body.dark footer { background:#0D3B66; }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-container">
+    <div class="logo-container">
+      <img src="orbixlogo.jpg" alt="Orbix Logo" class="logo-img">
+      <div class="logo-text">Orbix</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <button class="toggle-btn" id="mode-toggle">Dark Mode</button>
+    </nav>
+
+    <div class="hamburger" id="hamburger">
+      <div></div><div></div><div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="orb"></div>
+  <h1>Welcome to Orbix</h1>
+  <p>Your trusted freelance agency for web, design, and digital solutions. Let's bring your ideas to life!</p>
+  <a href="#contact" class="btn">Start a Project</a>
+</section>
+
+<!-- Services -->
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="services">
+    <div class="card">
+      <h3>Web Development</h3>
+      <p>Building responsive, modern websites using the latest technologies for your business.</p>
+    </div>
+    <div class="card">
+      <h3>UI/UX Design</h3>
+      <p>Creating intuitive and visually stunning interfaces that keep your users engaged.</p>
+    </div>
+    <div class="card">
+      <h3>Digital Branding</h3>
+      <p>Helping you stand out online with strong branding, graphics, and social media presence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <h2>About Us</h2>
+  <div class="about">
+    <div class="card">
+      <h3>Our Mission</h3>
+      <p>To deliver top-notch freelance services with creativity, efficiency, and professionalism.</p>
+    </div>
+    <div class="card">
+      <h3>Our Vision</h3>
+      <p>To become a go-to freelance agency for businesses and individuals seeking digital excellence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <h2>Contact Us</h2>
+  <form>
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <textarea rows="6" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 Orbix. All Rights Reserved.
+</footer>
+
+<!-- WhatsApp Button -->
+<button class="whatsapp-btn" onclick="window.open('https://wa.me/+2348135117900','_blank')">
+  💬
+</button>
+
+<script>
+  // Scroll fade-in sections
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){ entry.target.classList.add('visible'); }
+    });
+  }, { threshold:0.2 });
+  sections.forEach(section => observer.observe(section));
+
+  // Dark mode toggle
+  const modeBtn = document.getElementById('mode-toggle');
+  modeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    modeBtn.textContent = document.body.classList.contains('dark') ? 'Light Mode' : 'Dark Mode';
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('show');
+  });
+</script>
+
+</body>
+</html>
